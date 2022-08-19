@@ -53,10 +53,14 @@ rule summarise_swaps:
 
 rule summaries_to_table:
     input:
-        strand = expand( os.path.join(inDir,'{sample}.consec_strand.tsv'), sample=samples),
-        frame = expand( os.path.join(inDir,'{sample}.consec_frame.tsv'), sample=samples),
-        overlp = expand( os.path.join(inDir,'{sample}.consec_overlap.tsv'), sample=samples)
+        strand = expand(os.path.join(inDir,'{sample}.consec_strand.tsv'), sample=samples),
+        frame = expand(os.path.join(inDir,'{sample}.consec_frame.tsv'), sample=samples),
+        overlp = expand(os.path.join(inDir,'{sample}.consec_overlap.tsv'), sample=samples)
     output:
         os.path.join(inDir, 'summary.consec.tsv')
+    params:
+        samples = samples,
+        suffixes = {'strand':'.consec_strand.tsv','frame':'.consec_frame.tsv','overlap':'.consec_overlap.tsv'}
+        dir = inDir
     script:
         'scripts/combineConsecTsv.py'
