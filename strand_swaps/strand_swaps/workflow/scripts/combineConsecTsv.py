@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import os
+
 
 def parseTsv(sample=None, file=None, category=None):
     with open(file, 'r') as f:
