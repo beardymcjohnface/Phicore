@@ -1,12 +1,14 @@
 
 configfile: os.path.join(workflow.basedir, '../', 'config', 'config.yaml')
 
-infile = config['input']
+samples, = glob_wildcards(os.path.join(config['input'],'{sample}.gbk'))
+
+# infile = config['input']
 
 allTargets = [
-    infile + '.consec_strand.tsv',
-    infile + '.consec_frame.tsv',
-    infile + '.consec_overlap.tsv'
+    expand('{sample}.consec_strand.tsv', sample=samples),
+    expand('{sample}.consec_frame.tsv', sample=samples),
+    expand('{sample}.consec_overlap.tsv', sample=samples),
 ]
 
 # Mark target rules
@@ -29,9 +31,9 @@ rule print_targets:
 
 rule convert_genbank:
     input:
-        infile
+        '{file}.gbk'
     output:
-        infile + '.prot'
+        '{file}.prot'
     params:
         script = os.path.join(workflow.basedir, 'scripts', 'genbank2sequences.py')
     conda:
@@ -41,12 +43,10 @@ rule convert_genbank:
 
 rule summarise_swaps:
     input:
-        infile + '.prot'
+        '{file}.prot'
     output:
-        strnd = infile + '.consec_strand.tsv',
-        frame = infile + '.consec_frame.tsv',
-        ovlps = infile + '.consec_overlap.tsv'
+        strnd = '{file}.consec_strand.tsv',
+        frame = '{file}.consec_frame.tsv',
+        ovlps = '{file}.consec_overlap.tsv'
     script:
         'scripts/summarise_swaps.py'
-
-

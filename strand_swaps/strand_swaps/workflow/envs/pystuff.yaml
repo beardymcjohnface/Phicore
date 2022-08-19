@@ -1,6 +1,8 @@
 name: yeet
 channels:
   - conda-forge
+  - anaconda
   - defaults
 dependencies:
   - biopython
+  - pandas
