@@ -5,11 +5,16 @@ samples, = glob_wildcards(os.path.join(config['input'],'{sample}.gbk'))
 inDir = config['input']
 
 allTargets = [
-    expand(os.path.join(inDir,'{sample}.consec_strand.tsv'), sample=samples),
-    expand(os.path.join(inDir,'{sample}.consec_frame.tsv'), sample=samples),
-    expand(os.path.join(inDir,'{sample}.consec_overlap.tsv'), sample=samples),
-    os.path.join(inDir, 'summary.consec.tsv')
+    # expand(os.path.join(inDir,'{sample}.consec_strand.tsv'), sample=samples),
+    # expand(os.path.join(inDir,'{sample}.consec_frame.tsv'), sample=samples),
+    # expand(os.path.join(inDir,'{sample}.consec_overlap.tsv'), sample=samples),
+    expand(os.path.join(inDir,'{sample}.potential-alt-stops.tsv'), sample=samples),
+    expand(os.path.join(inDir,'{sample}.{suff}'), sample=samples, suff=['orfm.faa','orfm.fna','gaps.bed']),
+    # os.path.join(inDir, 'summary.consec.tsv')
 ]
+
+include: 'rules/strandSwaps.smk'
+include: 'rules/altStops.smk'
 
 # Mark target rules
 target_rules = []
@@ -28,39 +33,3 @@ rule print_targets:
     run:
         print("\nTop level rules are: \n", file=sys.stderr)
         print("* " + "\n* ".join(target_rules) + "\n\n", file=sys.stderr)
-
-rule convert_genbank:
-    input:
-        os.path.join(inDir,'{file}.gbk')
-    output:
-        os.path.join(inDir,'{file}.prot')
-    params:
-        script = os.path.join(workflow.basedir, 'scripts', 'genbank2sequences.py')
-    conda:
-        'envs/pystuff.yaml'
-    shell:
-        """python {params.script} -g {input} -p {output}"""
-
-rule summarise_swaps:
-    input:
-        os.path.join(inDir,'{file}.prot')
-    output:
-        strnd = os.path.join(inDir,'{file}.consec_strand.tsv'),
-        frame = os.path.join(inDir,'{file}.consec_frame.tsv'),
-        ovlps = os.path.join(inDir,'{file}.consec_overlap.tsv')
-    script:
-        'scripts/summarise_swaps.py'
-
-rule summaries_to_table:
-    input:
-        strand = expand(os.path.join(inDir,'{sample}.consec_strand.tsv'), sample=samples),
-        frame = expand(os.path.join(inDir,'{sample}.consec_frame.tsv'), sample=samples),
-        overlp = expand(os.path.join(inDir,'{sample}.consec_overlap.tsv'), sample=samples)
-    output:
-        os.path.join(inDir, 'summary.consec.tsv')
-    params:
-        samples = samples,
-        suffixes = {'strand':'.consec_strand.tsv','frame':'.consec_frame.tsv','overlap':'.consec_overlap.tsv'},
-        dir = inDir
-    script:
-        'scripts/combineConsecTsv.py'

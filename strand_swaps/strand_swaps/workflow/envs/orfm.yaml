@@ -1,0 +1,7 @@
+name: orfm
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - orfm=1.3
