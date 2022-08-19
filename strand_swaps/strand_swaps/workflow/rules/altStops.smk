@@ -25,7 +25,7 @@ rule prot_gaps:
     conda:
         '../envs/bedtools.yaml'
     shell:
-        """bedtools subtract -a {input.gen} -b {input.gen} > {output}"""
+        """bedtools subtract -a {input.gen} -b {input.prot} > {output}"""
 
 rule orfm:
     """Run ORFM on the input fasta genome file"""
