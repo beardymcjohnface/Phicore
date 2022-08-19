@@ -49,3 +49,13 @@ rule summarise_swaps:
         ovlps = os.path.join(inDir,'{file}.consec_overlap.tsv')
     script:
         'scripts/summarise_swaps.py'
+
+rule summaries_to_table:
+    input:
+        strand = expand( os.path.join(inDir,'{sample}.consec_strand.tsv'), sample=samples),
+        frame = expand( os.path.join(inDir,'{sample}.consec_frame.tsv'), sample=samples),
+        overlp = expand( os.path.join(inDir,'{sample}.consec_overlap.tsv'), sample=samples)
+    output:
+        os.path.join(inDir, 'summary.consec.tsv')
+    script:
+        'scripts/combineConsecTsv.py'
