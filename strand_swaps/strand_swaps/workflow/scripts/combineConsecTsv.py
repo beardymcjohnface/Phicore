@@ -8,7 +8,7 @@ def parseTsv(sample=None, file=None, category=None):
             yield f'{sample}\t{category}\t{l}\n'
 
 
-with open(snakemake.output, 'w') as out:
+with open(snakemake.output[0], 'w') as out:
     for sample in snakemake.params.samples:
         for suffix in snakemake.params.suffixes.keys():
             file = os.path.join(snakemake.params.dir, sample + snakemake.params.suffixes[suffix])
