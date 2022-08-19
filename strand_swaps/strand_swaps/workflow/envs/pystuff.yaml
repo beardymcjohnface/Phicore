@@ -1,0 +1,6 @@
+name: yeet
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - biopython
