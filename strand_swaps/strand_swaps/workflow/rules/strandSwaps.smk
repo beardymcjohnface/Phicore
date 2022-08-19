@@ -6,7 +6,7 @@ rule convert_genbank:
         prot = temp(os.path.join(inDir,'{file}.prot')),
         fna  = temp(os.path.join(inDir,'{file}.fna'))
     params:
-        script = os.path.join(workflow.basedir, '..', 'scripts', 'genbank2sequences.py'),
+        script = os.path.join(workflow.basedir, 'scripts', 'genbank2sequences.py'),
         prefix = os.path.join(inDir,'{file}')
     conda:
         '../envs/pystuff.yaml'
