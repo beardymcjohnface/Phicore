@@ -2,9 +2,9 @@
 
 rule prot_to_bed:
     input:
-        os.path.join(inDir,'{file}.prot')
+        os.path.join(outDir,'{file}.prot')
     output:
-        os.path.join(inDir, '{file}.prot.bed')
+        os.path.join(outDir, '{file}.prot.bed')
     script:
         '../scripts/prot2bed.py'
 
@@ -12,16 +12,16 @@ rule genome_window:
     input:
         os.path.join(inDir, '{file}.gbk')
     output:
-        temp(os.path.join(inDir, '{file}.genome.bed'))
+        temp(os.path.join(outDir, '{file}.genome.bed'))
     shell:
         """grep LOCUS {input} | awk '{{print $2"\t0\t"$3}}' > {output}"""
 
 rule prot_gaps:
     input:
-        prot = os.path.join(inDir, '{file}.prot.bed'),
-        gen  = os.path.join(inDir, '{file}.genome.bed')
+        prot = os.path.join(outDir, '{file}.prot.bed'),
+        gen  = os.path.join(outDir, '{file}.genome.bed')
     output:
-        os.path.join(inDir, '{file}.gaps.bed')
+        os.path.join(outDir, '{file}.gaps.bed')
     conda:
         '../envs/bedtools.yaml'
     shell:
