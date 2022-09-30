@@ -2,7 +2,7 @@
 
 rule prot_to_bed:
     input:
-        os.path.join(outDir,'{file}.prot')
+        os.path.join(outDir,'{file}.fixed.prot')
     output:
         os.path.join(outDir, '{file}.prot.bed')
     script:
@@ -14,7 +14,7 @@ rule genome_window:
     output:
         temp(os.path.join(outDir, '{file}.genome.bed'))
     shell:
-        """grep LOCUS {input} | awk '{{print $2"\t0\t"$3}}' > {output}"""
+        """grep LOCUS {input} | awk '{{print $2"\t0\t"$3}}' | sed 's/_/./g' > {output}"""
 
 rule prot_gaps:
     input:
@@ -30,7 +30,7 @@ rule prot_gaps:
 rule orfm:
     """Run ORFM on the input fasta genome file"""
     input:
-        '{file}.fna'
+        '{file}.fixed.fna'
     output:
         prot = '{file}.orfm.faa',
         nucl = '{file}.orfm.fna'

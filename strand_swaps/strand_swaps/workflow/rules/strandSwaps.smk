@@ -13,9 +13,22 @@ rule convert_genbank:
     shell:
         """python {params.script} -g {input} -p {output.prot} -n {params.prefix}"""
 
+rule fixIDs:
+    input:
+        prot = os.path.join(outDir,'{file}.prot'),
+        fna = os.path.join(outDir,'{file}.fna')
+    output:
+        prot = temp(os.path.join(outDir,'{file}.fixed.prot')),
+        fna = temp(os.path.join(outDir,'{file}.fixed.fna'))
+    shell:
+        """
+        sed 's/_/./g' {input.prot} > {output.prot}
+        sed 's/_/./g' {input.fna} > {output.fna}
+        """
+
 rule summarise_swaps:
     input:
-        os.path.join(outDir,'{file}.prot')
+        os.path.join(outDir,'{file}.fixed.prot')
     output:
         strnd = temp(os.path.join(outDir,'{file}.consec_strand.tsv')),
         frame = temp(os.path.join(outDir,'{file}.consec_frame.tsv')),
