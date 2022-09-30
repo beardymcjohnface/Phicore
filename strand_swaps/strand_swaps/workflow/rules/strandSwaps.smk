@@ -29,7 +29,7 @@ rule summaries_to_table:
         frame = expand(os.path.join(outDir,'{sample}.consec_frame.tsv'), sample=samples),
         overlp = expand(os.path.join(outDir,'{sample}.consec_overlap.tsv'), sample=samples)
     output:
-        os.path.join(inDir, 'summary.consec.tsv')
+        os.path.join(outDir, 'summary.consec.tsv')
     params:
         samples = samples,
         suffixes = {'strand':'.consec_strand.tsv','frame':'.consec_frame.tsv','overlap':'.consec_overlap.tsv'},
