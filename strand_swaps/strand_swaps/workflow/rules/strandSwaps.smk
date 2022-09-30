@@ -33,6 +33,6 @@ rule summaries_to_table:
     params:
         samples = samples,
         suffixes = {'strand':'.consec_strand.tsv','frame':'.consec_frame.tsv','overlap':'.consec_overlap.tsv'},
-        dir = inDir
+        dir = outDir
     script:
         '../scripts/combineConsecTsv.py'
