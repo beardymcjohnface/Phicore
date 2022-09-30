@@ -156,7 +156,7 @@ def common_options(func):
         click.option('--conda-prefix', default=snake_base(os.path.join('workflow', 'conda')),
                      help='Custom conda env directory', type=click.Path(), show_default=False),
         click.option('--snake-default', multiple=True,
-                     default=['--rerun-incomplete', '--printshellcmds', '--nolock', '--show-failed-logs'],
+                     default=['--rerun-incomplete', '--printshellcmds', '--nolock', '--show-failed-logs', '--notemp'],
                      help="Customise Snakemake runtime args", show_default=True),
     ]
     for option in reversed(options):

@@ -13,7 +13,7 @@ with open(snakemake.output[0],'w') as outfh:
                     l[1],                       # start
                     str(int(l[1]) + len(seq)),  # stop
                     l[3],                       # orfmID
-                    l[2]                        # frame
+                    l[2] + '\n'                 # frame
                 ]))
             else:
                 sys.stderr.write(f'ERROR: expecting fasta id, got {line}')
