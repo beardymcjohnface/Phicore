@@ -58,4 +58,4 @@ rule orfm_gap_filt:
     conda:
         '../envs/bedtools.yaml'
     shell:
-        "bedtools -a {input.orf} -b {input.gap} -wa > {output}"
+        "bedtools intersect -a {input.orf} -b {input.gap} -wa > {output}"
