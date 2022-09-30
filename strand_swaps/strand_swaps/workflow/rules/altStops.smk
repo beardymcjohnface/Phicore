@@ -38,3 +38,13 @@ rule orfm:
         "../envs/orfm.yaml"
     shell:
         "orfm {input} -t {output.nucl} -p -s > {output.prot}"
+
+rule orfm_bed:
+    """Get BED coords for ORFM fragments"""
+    input:
+        '{file}.orfm.faa'
+    output:
+        '{file}.orfm.bed'
+    script:
+        '../scripts/orfm2bed.py'
+
