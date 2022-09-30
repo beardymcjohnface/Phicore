@@ -6,9 +6,18 @@ inDir = config['input']
 outDir = config['output']
 
 allTargets = [
-    expand(os.path.join(outDir,'{sample}.{suff}'), sample=samples, suff=['orfm.faa','orfm.fna','gaps.bed','orfm.bed']),
     expand(os.path.join(outDir,'{sample}.{suff}'),
-        sample=samples, suff=['consec_strand.tsv','consec_frame.tsv','consec_overlap.tsv']),
+        sample=samples,
+        suff=[
+            'orfm.faa',
+            'orfm.fna',
+            'gaps.bed',
+            'orfm.bed',
+            'consec_strand.tsv',
+            'consec_frame.tsv',
+            'consec_overlap.tsv',
+            'gaporfm.bed'
+        ]),
     os.path.join(outDir, 'summary.consec.tsv')
 ]
 

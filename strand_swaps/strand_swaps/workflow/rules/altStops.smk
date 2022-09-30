@@ -48,3 +48,14 @@ rule orfm_bed:
     script:
         '../scripts/orfm2bed.py'
 
+rule orfm_gap_filt:
+    """Filter orfm fragments that overlap protein annotations"""
+    input:
+        orf = '{file}.orfm.bed',
+        gap = '{file}.gaps.bed'
+    output:
+        '{file}.gaporfm.bed'
+    conda:
+        '../envs/bedtools.yaml'
+    shell:
+        "bedtools -a {input.orf} -b {input.gap} -wa > {output}"
